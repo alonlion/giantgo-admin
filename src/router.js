@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import NProgress from 'nprogress/nprogress'
+import store from './store'
 
 const home = () => import(/* webpackChunkName: "index" */ './views/Index.vue')
 const signIn = () => import(/* webpackChunkName: "passport" */ './views/Passport/SignIn.vue')
@@ -33,17 +34,25 @@ const router = new Router({
 })
 
 router.beforeEach(function (to, from, next) {
-  if (to.matched.some(record => record.meta.authorization)) {
-    if (Vue.cookie.get('token')) {
-      next()
-    } else {
-      next({
-        path: '/passport/signin',
-        query: {redirect: to.fullPath}
-      })
-    }
-  } else {
+  const requireAuth = to.matched.some(record => record.meta.authorization)
+
+  if (!requireAuth) {
     next()
+  }
+
+  if (Vue.cookie.get('token')) {
+    return store.dispatch('getMyInfo').then(validUser => {
+      // Then continue if the token still represents a valid user,
+      // otherwise redirect to login.
+      validUser ? next() : redirectToLogin()
+    })
+  }
+
+  function redirectToLogin () {
+    next({
+      path: '/passport/signin',
+      query: {redirect: to.fullPath}
+    })
   }
 })
 

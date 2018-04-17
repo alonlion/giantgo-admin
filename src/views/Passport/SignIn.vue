@@ -1,19 +1,75 @@
 <template>
-    <el-form ref="ruleForm2" label-position="left" label-width="0px" class="demo-ruleForm login-container">
-        <h3 class="title">系统登录</h3>
-        <el-form-item prop="account">
-            <el-input type="text" v-model="user.username" auto-complete="off" placeholder="账号"></el-input>
+    <el-form class="login-container" ref="form" :model="form" :rules="rules" label-position="left" label-width="0px">
+        <h3 class="title">登录GiantGo</h3>
+        <el-form-item prop="username" :error="errors.username">
+            <el-input type="text" v-model="form.username" auto-complete="off" placeholder="手机/邮箱"/>
         </el-form-item>
-        <el-form-item prop="checkPass">
-            <el-input type="password" v-model="user.password" auto-complete="off" placeholder="密码"></el-input>
+        <el-form-item prop="password" :error="errors.password">
+            <el-input type="password" v-model="form.password" auto-complete="off" placeholder="密码"/>
         </el-form-item>
         <el-form-item style="width:100%;">
-            <el-button type="primary" style="width:100%;" @click.native.prevent="signIn" :loading="logining">登录
+            <el-button type="primary" style="width:100%;" @click.native.prevent="signIn" :loading="logining">
+                登录
             </el-button>
         </el-form-item>
     </el-form>
 </template>
-<style lang="scss" rel="stylesheet/scss" scoped>
+<script>
+  export default {
+    data () {
+      return {
+        logining: false,
+        form: {
+          username: '',
+          password: ''
+        },
+        rules: {
+          username: [
+            {required: true, message: '请输入用户名'},
+            {max: 255, message: '长度不超过255个字符'}
+          ],
+          password: [
+            {required: true, message: '请输入密码'},
+            {max: 255, message: '长度不超过255个字符'}
+          ]
+        },
+        errors: {
+          username: '',
+          password: ''
+        }
+      }
+    },
+    components: {},
+    methods: {
+      signIn () {
+        this.$refs['form'].validate((valid) => {
+          if (valid) {
+            this.logining = true
+            this.$store.dispatch('signIn', {
+              username: this.form.username,
+              password: this.form.password
+            }).then(() => {
+              this.redirectPage()
+            }, (error) => {
+              this.logining = false
+              this.$message(error.desc)
+            })
+          }
+        })
+      },
+      redirectPage () {
+        let redirectUrl = this.$route.query.redirect
+
+        if (redirectUrl) {
+          this.$router.push({path: redirectUrl})
+        } else {
+          this.$router.push({name: 'home'})
+        }
+      }
+    }
+  }
+</script>
+<style lang="scss" scoped>
     .login-container {
         /*box-shadow: 0 0px 8px 0 rgba(0, 0, 0, 0.06), 0 1px 0px 0 rgba(0, 0, 0, 0.02);*/
         -webkit-border-radius: 5px;
@@ -36,37 +92,3 @@
         }
     }
 </style>
-<script type="text/ecmascript-6">
-  export default {
-    data () {
-      return {
-        logining: false,
-        user: {
-          username: '15930181489',
-          password: 'Pass@word1'
-        }
-      }
-    },
-    components: {},
-    methods: {
-      signIn () {
-        this.logining = true
-        this.$store.dispatch('signIn', this.user).then(() => {
-          this.redirectPage()
-        }, (error) => {
-          this.logining = false
-          this.$message(error['body']['message'])
-        })
-      },
-      redirectPage () {
-        let redirectUrl = this.$route.query.redirect
-        console.log(redirectUrl)
-        if (redirectUrl) {
-          this.$router.push({path: redirectUrl})
-        } else {
-          this.$router.push({name: 'home'})
-        }
-      }
-    }
-  }
-</script>

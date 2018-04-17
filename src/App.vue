@@ -7,7 +7,6 @@
     name: 'app',
     components: {},
     mounted () {
-      this.$store.dispatch('getMyInfo')
     }
   }
 </script>

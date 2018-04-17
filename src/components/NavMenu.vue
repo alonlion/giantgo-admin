@@ -12,9 +12,9 @@
         </el-col>
         <el-col :span="4" class="user-info">
             <el-dropdown>
-        <span class="el-dropdown-link">
-          {{userInfo.email}}<i class="el-icon-caret-bottom el-icon--right"></i>
-        </span>
+                <span class="el-dropdown-link">
+                  {{userInfo.email}}<i class="el-icon-caret-bottom el-icon--right"></i>
+                </span>
                 <el-dropdown-menu slot="dropdown">
                     <el-dropdown-item>设置</el-dropdown-item>
                     <el-dropdown-item divided>退出登录</el-dropdown-item>
