@@ -13,34 +13,19 @@ const getters = {
 
 const actions = {
   signUp ({commit, state}, userInfo) {
-    return new Promise((resolve, reject) => {
-      axios.post('/api/user', userInfo).then((response) => {
-        Vue.cookie.set('token', response.data.token)
-        resolve(response)
-      }).catch(({response}) => {
-        reject(response.data)
-      })
+    return axios.post('/api/user', userInfo).then((response) => {
+      Vue.cookie.set('token', response.data.token)
     })
   },
   signIn ({commit, state}, userInfo) {
-    return new Promise((resolve, reject) => {
-      axios.patch('/api/user', userInfo).then((response) => {
-        Vue.cookie.set('token', response.data.token)
-        resolve(response)
-      }).catch(({response}) => {
-        reject(response.data)
-      })
+    return axios.patch('/api/user', userInfo).then((response) => {
+      Vue.cookie.set('token', response.data.token)
     })
   },
   getMyInfo ({commit, state}) {
-    return new Promise((resolve, reject) => {
-      axios.get('/api/user').then((response) => {
-        let userInfo = response.data
-        commit('setUserInfo', userInfo)
-        resolve(response)
-      }).catch(({response}) => {
-        reject(response.data)
-      })
+    return axios.get('/api/user').then((response) => {
+      let userInfo = response.data
+      commit('setUserInfo', userInfo)
     })
   },
   clearUserInfo ({commit, state}) {

@@ -3,7 +3,7 @@ import Router from 'vue-router'
 import NProgress from 'nprogress/nprogress'
 import store from './store'
 
-const home = () => import(/* webpackChunkName: "index" */ './views/Index.vue')
+const index = () => import(/* webpackChunkName: "index" */ './views/Index.vue')
 const signIn = () => import(/* webpackChunkName: "passport" */ './views/Passport/SignIn.vue')
 const signUp = () => import(/* webpackChunkName: "passport" */ './views/Passport/SignUp.vue')
 
@@ -14,9 +14,9 @@ const router = new Router({
   linkActiveClass: 'active',
   routes: [
     {
-      path: '/home',
-      name: 'home',
-      component: home,
+      path: '/',
+      name: 'index',
+      component: index,
       meta: {authorization: true}
     }, {
       path: '/passport/signup',
@@ -28,7 +28,7 @@ const router = new Router({
       component: signIn
     }, {
       path: '*',
-      component: home
+      component: index
     }
   ]
 })
@@ -37,20 +37,23 @@ router.beforeEach(function (to, from, next) {
   const requireAuth = to.matched.some(record => record.meta.authorization)
 
   if (!requireAuth) {
-    next()
+    return next()
   }
 
   if (Vue.cookie.get('token')) {
-    return store.dispatch('getMyInfo').then(validUser => {
-      // Then continue if the token still represents a valid user,
-      // otherwise redirect to login.
-      validUser ? next() : redirectToLogin()
+    return store.dispatch('getMyInfo').then(() => {
+      next()
+    }).catch(() => {
+      store.dispatch('clearUserInfo')
+      redirectToLogin()
     })
   }
 
+  redirectToLogin()
+
   function redirectToLogin () {
     next({
-      path: '/passport/signin',
+      name: 'signin',
       query: {redirect: to.fullPath}
     })
   }

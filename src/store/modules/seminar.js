@@ -24,33 +24,18 @@ const getters = {
 
 const actions = {
   getSeminar ({commit, state}, seminarId) {
-    return new Promise((resolve, reject) => {
-      axios.get('/api/seminars/' + seminarId).then((response) => {
-        commit('setSeminar', response.data)
-        resolve(response['data'])
-      }, (response) => {
-        reject(response)
-      })
+    return axios.get('/api/seminars/' + seminarId).then((response) => {
+      commit('setSeminar', response.data)
     })
   },
   updateSeminar ({commit, state}, seminarInfo) {
-    return new Promise((resolve, reject) => {
-      axios.put('/api/seminars/' + seminarInfo.id, seminarInfo).then((response) => {
-        commit('setSeminar', response.data)
-        resolve(response['data'])
-      }, (response) => {
-        reject(response)
-      })
+    return axios.put('/api/seminars/' + seminarInfo.id, seminarInfo).then((response) => {
+      commit('setSeminar', response.data)
     })
   },
   deleteSeminar ({commit, state}, seminarId) {
-    return new Promise((resolve, reject) => {
-      axios.delete('/api/seminars/' + seminarId).then((response) => {
-        commit('deleteSeminar')
-        resolve(response['data'])
-      }, (response) => {
-        reject(response)
-      })
+    return axios.delete('/api/seminars/' + seminarId).then((response) => {
+      commit('deleteSeminar')
     })
   }
 }
