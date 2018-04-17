@@ -1,9 +1,6 @@
 import Vue from 'vue'
 import VueCookie from 'vue-cookie'
 import axios from 'axios'
-import VueAxios from 'vue-axios'
-import lodash from 'lodash'
-import VueLodash from 'vue-lodash'
 import moment from 'vue-moment'
 import Element from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
@@ -14,8 +11,6 @@ import App from './App.vue'
 Vue.use(Element)
 Vue.use(VueCookie)
 Vue.use(moment)
-Vue.use(VueLodash, lodash)
-Vue.use(VueAxios, axios)
 
 axios.interceptors.request.use(function (config) {
   if (Vue.cookie.get('token')) {

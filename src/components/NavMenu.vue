@@ -65,8 +65,9 @@
         }
     }
 </style>
-<script type="text/ecmascript-6">
+<script>
   import { mapGetters } from 'vuex'
+  import { findIndex } from 'lodash'
 
   export default {
     name: 'nav-menu',
@@ -105,8 +106,7 @@
     },
     methods: {
       routeChange () {
-        console.log(this._)
-        this.currentIndex = this._.findIndex(this.navigators, navigator => {
+        this.currentIndex = findIndex(this.navigators, navigator => {
           return this.$route.fullPath.indexOf(navigator.key) > -1
         }).toString()
       }

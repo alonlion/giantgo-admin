@@ -7,14 +7,16 @@
     name: 'app',
     components: {},
     mounted () {
-      this.$store.dispatch('getMyInfo', {}).then((data) => {
-      }, (response) => {
-      })
+      this.$store.dispatch('getMyInfo')
     }
   }
 </script>
 
-<style lang="scss" rel="stylesheet/scss">
+<style lang="scss">
+    @import '~normalize.css/normalize.css';
+    @import '~nprogress/nprogress.css';
+    @import './sass/index';
+
     html {
         font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
         line-height: 1.2;
@@ -80,53 +82,8 @@
         color: inherit;
     }
 
-    .container, .wrapper {
-        height: 100%;
-    }
-
-    .container {
-        padding-top: 60px;
-    }
-
-    .wrapper {
-        position: relative;
-    }
-
-    header {
-        position: absolute;
-        width: 100%;
-        height: 60px;
-        line-height: 60px;
-        top: 0;
-        left: 0;
-        padding: 0 20px;
-        z-index: 1;
-        box-sizing: border-box;
-        background-color: rgb(32, 160, 255);
-    }
-
-    .menu {
-        height: 100%;
-    }
-
-    .content {
-        height: 100%;
-        padding: 20px;
-        overflow: auto;
-    }
-
-    .fade-enter-active,
-    .fade-leave-active {
-        transition: all .2s ease;
-    }
-
-    .fade-enter,
-    .fade-leave-active {
-        opacity: 0;
-    }
-
-    .el-dialog {
-        min-width: 550px;
+    #nprogress .bar {
+        background: $color-link-text;
     }
 </style>
 

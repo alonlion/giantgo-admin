@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import axios from 'axios'
 
 const state = {
   userInfo: {},
@@ -13,7 +14,7 @@ const getters = {
 const actions = {
   signUp ({commit, state}, userInfo) {
     return new Promise((resolve, reject) => {
-      Vue.axios.post('/v1/api/user', userInfo).then((response) => {
+      axios.post('/api/user', userInfo).then((response) => {
         let token = response['data']['token']
         commit('setUserInfo', {
           email: userInfo['email']
@@ -27,7 +28,7 @@ const actions = {
   },
   signIn ({commit, state}, userInfo) {
     return new Promise((resolve, reject) => {
-      Vue.axios.patch('/v1/api/user', userInfo).then((response) => {
+      axios.patch('/api/user', userInfo).then((response) => {
         let token = response['data']['token']
         commit('setUserInfo', {
           email: userInfo['email']
@@ -41,7 +42,7 @@ const actions = {
   },
   getMyInfo ({commit, state}) {
     return new Promise((resolve, reject) => {
-      Vue.axios.get('/v1/api/user').then((response) => {
+      axios.get('/api/user').then((response) => {
         let userInfo = response['data']
         commit('setUserInfo', {
           email: userInfo['email']
