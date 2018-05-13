@@ -14,7 +14,7 @@ Vue.use(moment)
 
 axios.interceptors.request.use(function (config) {
   if (Vue.cookie.get('token')) {
-    config.headers['authorization'] = 'Bearer ' + Vue.cookie.get('token')
+    config.headers['securityid'] = Vue.cookie.get('token')
   }
 
   return config

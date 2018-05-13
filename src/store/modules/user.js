@@ -12,24 +12,18 @@ const getters = {
 }
 
 const actions = {
-  signUp ({commit, state}, userInfo) {
-    return axios.post('/api/user', userInfo).then((response) => {
-      Vue.cookie.set('token', response.data.token)
-    })
-  },
   signIn ({commit, state}, userInfo) {
-    return axios.patch('/api/user', userInfo).then((response) => {
-      Vue.cookie.set('token', response.data.token)
+    return axios.post('/api/Users/Login?' + 'code=' + userInfo.username + '&pwd=' + userInfo.password).then((response) => {
+      commit('setUserInfo', response.data.Content)
+      Vue.cookie.set('token', response.data.Desc)
     })
   },
   getMyInfo ({commit, state}) {
-    return axios.get('/api/user').then((response) => {
-      let userInfo = response.data
-      commit('setUserInfo', userInfo)
+    return axios.post('/api/Users/Test').then((response) => {
     })
   },
   clearUserInfo ({commit, state}) {
-    commit('clearUserInfo')
+    commit('logout')
     Vue.cookie.delete('token')
   }
 }

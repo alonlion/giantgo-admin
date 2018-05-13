@@ -2,7 +2,7 @@ module.exports = {
   devServer: {
     proxy: {
       '/api': {
-        target: 'https://www.runighcat.com/',
+        target: 'http://140.143.66.162/',
         ws: true,
         changeOrigin: true
       }
@@ -10,7 +10,7 @@ module.exports = {
   },
   configureWebpack: config => {
     if (process.env.NODE_ENV === 'production') {
-      config.output.publicPath = 'https://cdn.runighcat.com/'
+      // config.output.publicPath = 'https://cdn.runighcat.com/'
     } else {
       // mutate for development...
     }

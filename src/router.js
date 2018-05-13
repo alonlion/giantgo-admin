@@ -5,7 +5,9 @@ import store from './store'
 
 const index = () => import(/* webpackChunkName: "index" */ './views/Index.vue')
 const signIn = () => import(/* webpackChunkName: "passport" */ './views/Passport/SignIn.vue')
-const signUp = () => import(/* webpackChunkName: "passport" */ './views/Passport/SignUp.vue')
+const saleIndex = () => import(/* webpackChunkName: "sales" */ './views/Sales/Index.vue')
+const userIndex = () => import(/* webpackChunkName: "users" */ './views/Users/Index.vue')
+const managerIndex = () => import(/* webpackChunkName: "managers" */ './views/Managers/Index.vue')
 
 Vue.use(Router)
 
@@ -17,11 +19,22 @@ const router = new Router({
       path: '/',
       name: 'index',
       component: index,
+      children: [
+        {
+          path: '/sales',
+          name: 'saleIndex',
+          component: saleIndex
+        }, {
+          path: '/managers',
+          name: 'managerIndex',
+          component: managerIndex
+        }, {
+          path: '/users',
+          name: 'userIndex',
+          component: userIndex
+        }
+      ],
       meta: {authorization: true}
-    }, {
-      path: '/passport/signup',
-      name: 'signup',
-      component: signUp
     }, {
       path: '/passport/signin',
       name: 'signin',
