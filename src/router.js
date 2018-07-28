@@ -2,10 +2,13 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import NProgress from 'nprogress/nprogress'
 import store from './store'
+import { getToken } from '@/utils/token'
 
-const index = () => import(/* webpackChunkName: "index" */ './views/Index.vue')
-const signIn = () => import(/* webpackChunkName: "passport" */ './views/Passport/SignIn.vue')
-const signUp = () => import(/* webpackChunkName: "passport" */ './views/Passport/SignUp.vue')
+const passport = () => import(/* webpackChunkName: "passports" */ './views/Passport.vue')
+const signIn = () => import(/* webpackChunkName: "passports" */ './views/Passport/SignIn.vue')
+const signUp = () => import(/* webpackChunkName: "passports" */ './views/Passport/SignUp.vue')
+const main = () => import(/* webpackChunkName: "home" */ './views/Main.vue')
+const dashboard = () => import(/* webpackChunkName: "home" */ './views/Home/Dashboard.vue')
 
 Vue.use(Router)
 
@@ -14,21 +17,38 @@ const router = new Router({
   linkActiveClass: 'active',
   routes: [
     {
+      path: '/passports',
+      name: 'passports',
+      component: passport,
+      meta: {authorization: false},
+      children: [
+        {
+          path: 'signin',
+          name: 'signIn',
+          component: signIn
+        },
+        {
+          path: 'signup',
+          name: 'signUp',
+          component: signUp
+        }
+      ]
+    }, {
       path: '/',
-      name: 'index',
-      component: index,
-      meta: {authorization: true}
-    }, {
-      path: '/passport/signup',
-      name: 'signup',
-      component: signUp
-    }, {
-      path: '/passport/signin',
-      name: 'signin',
-      component: signIn
+      name: 'main',
+      redirect: 'dashboard',
+      component: main,
+      meta: {authorization: true},
+      children: [
+        {
+          path: 'dashboard',
+          name: 'dashboard',
+          component: dashboard
+        }
+      ]
     }, {
       path: '*',
-      component: index
+      component: dashboard
     }
   ]
 })
@@ -40,11 +60,11 @@ router.beforeEach(function (to, from, next) {
     return next()
   }
 
-  if (Vue.cookie.get('token')) {
+  if (getToken()) {
     return store.dispatch('getMyInfo').then(() => {
       next()
     }).catch(() => {
-      store.dispatch('clearUserInfo')
+      store.dispatch('logout')
       redirectToLogin()
     })
   }
@@ -53,7 +73,7 @@ router.beforeEach(function (to, from, next) {
 
   function redirectToLogin () {
     next({
-      name: 'signin',
+      name: 'signIn',
       query: {redirect: to.fullPath}
     })
   }

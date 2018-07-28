@@ -1,8 +1,13 @@
 module.exports = {
+  resolve: {
+    alias: {
+      '@': require('path').resolve(__dirname, 'src')
+    }
+  },
   devServer: {
     proxy: {
       '/api': {
-        target: 'https://www.runighcat.com/',
+        target: 'http://localhost:4000/',
         ws: true,
         changeOrigin: true
       }

@@ -1,46 +1,72 @@
-import Vue from 'vue'
-import axios from 'axios'
+import { signIn, signUp, getMyInfo } from '@/api/user'
+import { setToken, removeToken } from '@/utils/token'
 
 const state = {
-  userInfo: {},
-  token: ''
+  email: '',
+  avatar: '',
+  token: '',
+  roles: [],
+  permissions: []
 }
 
 const getters = {
-  userInfo: state => state.userInfo,
-  token: state => state.token
+  email: state => state.email,
+  avatar: state => state.avatar,
+  token: state => state.token,
+  roles: state => state.roles,
+  permissions: state => state.permissions
 }
 
 const actions = {
-  signUp ({commit, state}, userInfo) {
-    return axios.post('/api/user', userInfo).then((response) => {
-      Vue.cookie.set('token', response.data.token)
+  signUp ({commit}, userInfo) {
+    return signUp(userInfo).then((response) => {
+      const token = response.data.token
+      setToken(token)
+      commit('setToken', token)
     })
   },
-  signIn ({commit, state}, userInfo) {
-    return axios.patch('/api/user', userInfo).then((response) => {
-      Vue.cookie.set('token', response.data.token)
+  signIn ({commit}, {userName, password}) {
+    return signIn(userName, password).then((response) => {
+      const token = response.data.token
+      setToken(token)
+      commit('setToken', token)
     })
   },
-  getMyInfo ({commit, state}) {
-    return axios.get('/api/user').then((response) => {
+  logout ({commit}) {
+    commit('setEmail', '')
+    commit('setAvatar', '')
+    commit('setRoles', '')
+    commit('setPermissions', '')
+    commit('setToken', '')
+    removeToken()
+  },
+  getMyInfo ({commit}) {
+    return getMyInfo().then((response) => {
       let userInfo = response.data
-      commit('setUserInfo', userInfo)
+
+      commit('setEmail', userInfo.email)
+      commit('setAvatar', userInfo.avatar)
+      commit('setRoles', userInfo.roles)
+      commit('setPermissions', userInfo.permissions)
     })
-  },
-  clearUserInfo ({commit, state}) {
-    commit('clearUserInfo')
-    Vue.cookie.delete('token')
   }
 }
 
 const mutations = {
-  setUserInfo (state, userInfo) {
-    state.userInfo = userInfo
+  setToken (state, token) {
+    state.token = token
   },
-  logout () {
-    state.userInfo = null
-    state.token = ''
+  setEmail (state, email) {
+    state.email = email
+  },
+  setAvatar (state, avatar) {
+    state.avatar = avatar
+  },
+  setRoles (state, roles) {
+    state.roles = roles
+  },
+  setPermissions (state, permissions) {
+    state.permissions = permissions
   }
 }
 

@@ -1,0 +1,88 @@
+.el-header {
+    line-height: 60px;
+    background: #20a0ff;
+    color: #fff;
+}
+
+.el-footer {
+    height: 60px;
+    line-height: 60px;
+    padding: 0 20px;
+    text-align: center;
+    color: #666666;
+    background: #f5f6f5;
+    font-size: 12px;
+}
+
+.el-main {
+    min-height: 500px;
+}
+
+.el-table {
+    width: 100%;
+th {
+    overflow: hidden;
+    background-color: #dee4ef;
+}
+}
+
+.breadcrumb-container {
+    overflow: hidden;
+    background: #f2f2f2;
+    padding: 10px;
+    margin: 0 0 20px 0;
+.title {
+    width: 200px;
+    float: left;
+    color: #475669;
+}
+.breadcrumb-inner {
+    float: left;
+}
+}
+
+.dialog-footer {
+    margin-top: 20px;
+    text-align: right;
+}
+
+.img-uploader {
+.el-upload {
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+
+&:hover {
+     border-color: #409EFF;
+ }
+}
+
+.img-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 52px;
+    height: 52px;
+    line-height: 52px;
+    text-align: center;
+}
+
+.img {
+    width: 52px;
+    height: 52px;
+    display: block;
+}
+}
+
+.pager {
+    float: right;
+    margin-top: 10px;
+}
+
+.phone-ellipsis {
+    width: 120px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
